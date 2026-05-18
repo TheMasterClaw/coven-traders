@@ -122,8 +122,8 @@ export default function Shop({ playerId, api, walletBalance }: ShopProps) {
     try {
       await api.purchaseItem(playerId, item.id);
       alert(`Purchased ${item.name}!`);
-    } catch (e) {
-      alert(`Purchase failed: ${e.message}`);
+    } catch (e: any) {
+      alert(`Purchase failed: ${e?.message || 'Unknown error'}`);
     } finally {
       setPurchasing(null);
     }

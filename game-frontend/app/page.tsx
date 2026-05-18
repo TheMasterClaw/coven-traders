@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import CommandCenter from "@/components/CommandCenter";
 import Shop from "@/components/Shop";
+import FleetManager from "@/components/FleetManager";
+import TechTree from "@/components/TechTree";
+import MarketRadar from "@/components/MarketRadar";
 import { GameAPI } from "@/lib/api";
 
 const SpaceMap = dynamic(() => import("@/components/SpaceMap"), { ssr: false });
@@ -20,7 +23,7 @@ const MOCK_SECTORS = [
 
 export default function Dashboard() {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"map" | "fleets" | "shop" | "leaderboard">("map");
+  const [activeTab, setActiveTab] = useState<"map" | "fleets" | "tech" | "radar" | "shop" | "leaderboard">("map");
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
   const [balance, setBalance] = useState("100.00");
@@ -81,6 +84,8 @@ export default function Dashboard() {
               {[
                 { id: "map", label: "🗺️ Sector Map", desc: "Explore the galaxy" },
                 { id: "fleets", label: "🚀 Fleet Manager", desc: "Deploy disciples" },
+                { id: "tech", label: "🔬 Tech Tree", desc: "Research upgrades" },
+                { id: "radar", label: "📡 Market Radar", desc: "Trading signals" },
                 { id: "shop", label: "🛒 Market", desc: "Buy boosts & packs" },
                 { id: "leaderboard", label: "🏆 Leaderboard", desc: "Season rankings" },
               ].map((tab) => (
@@ -140,11 +145,15 @@ export default function Dashboard() {
             )}
 
             {activeTab === "fleets" && (
-              <div className="bg-gray-900 border border-gray-700 rounded-lg p-8 text-center">
-                <div className="text-4xl mb-4">🚀</div>
-                <div className="text-lg font-bold">Fleet Manager</div>
-                <div className="text-sm text-gray-500">Coming in next build... Deploy, upgrade, and merge your disciple fleets.</div>
-              </div>
+              <FleetManager playerId="demo-player" api={api} />
+            )}
+
+            {activeTab === "tech" && (
+              <TechTree />
+            )}
+
+            {activeTab === "radar" && (
+              <MarketRadar />
             )}
 
             {activeTab === "leaderboard" && (
